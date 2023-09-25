@@ -1,0 +1,47 @@
+baseURL: 'https://yzguy.github.io/'
+title: 'Yzguy'
+theme: 'loveit'
+
+languageCode: 'en-us'
+languageName: 'English'
+
+author:
+  name: 'Adam Smith'
+  email: ''
+  link: 'https://github.com/yzguy'
+
+params:
+  defaultTheme: 'light'
+  title: 'Yzguy'
+  description: ''
+  dateFormat: '01-02-2006'
+
+  header:
+    title:
+      name: 'Yzguy'
+
+  home:
+    profile:
+      enable: true
+      avatarURL: 'https://avatars.githubusercontent.com/u/3869511?s=400&v=4'
+      typeit: false
+      social: true
+
+      subtitle: 'Projects & Articles'
+
+  social:
+    GitHub: 'yzguy'
+
+  page:
+    share:
+      enable: true
+      Twitter: true
+      Facebook: true
+      Linkedin: true
+      HackerNews: true
+      Reddit: true
+
+  toc:
+    enable: true
+    keepStatic: false
+    auto: true
