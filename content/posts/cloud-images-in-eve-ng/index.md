@@ -149,6 +149,10 @@ As with all EVE-NG images, we need to run `fixpermissions`
 
 ### Deploy Node
 
+{{< admonition type=warning >}}
+Each node should be connected to the internet in some way before starting them, the easiest being through Cloud0. Without this, they take a long time to boot because Cloud-init is unable to complete
+{{< /admonition >}}
+
 Return to your EVE-NG Lab and launch a node, you will find these cloud images under `Linux`, then in the `Image` dropdown you can select the one you want.
 
 ![Launch Node](images/launch-node.png)
