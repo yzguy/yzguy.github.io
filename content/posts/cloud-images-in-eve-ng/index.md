@@ -7,18 +7,59 @@ EVE-NG has [documentation](https://www.eve-ng.net/index.php/documentation/howtos
 This is helpful, but the latest Ubuntu image is 20.04.2 and we don't know the origins of these images.
 
 Fortunately, it's easy to get Ubuntu and Debian cloud images working in EVE-NG
+### Create Custom Template
+
+We will need to create a custom template as we will want some options that aren't specified in the `Linux` one
+
+```
+# linux-cloud.yml
+---
+type: qemu
+description: Linux Cloud Image
+name: Linux Cloud Image
+cpulimit: 1
+icon: Server.png
+cpu: 1
+ram: 1024
+ethernet: 1
+console: telnet
+shutdown: 1
+qemu_arch: x86_64
+qemu_version: 2.12.0
+qemu_nic: virtio-net-pci
+qemu_options: -machine type=pc,accel=kvm -nographic -usbdevice tablet -boot order=cd -cpu host -serial mon:stdio
+...
+```
+
+After saving this, we can copy it to the AMD & Intel directories where templates are kept
+
+```
+cp linux-cloud.yml /opt/unetlab/html/templates/amd
+cp linux-cloud.yml /opt/unetlab/html/templates/intel
+```
+
+Finally, we just need to register the custom template so EVE-NG knows it exists
+
+```
+# /opt/unetlab/html/includes/custom_templates.yml
+---
+custom_templates:
+  - name: linux-cloud
+    listname: Linux Cloud
+...
+```
 
 ### Create Image Folder(s)
 
 You will need to create a folder on your EVE-NG machine for each cloud image version you want to use.
 
 {{< admonition type=note >}}
-Image folders must be prefixed with `linux-` for EVE-NG to pick them up, the text after the hyphen can be whatever you want
+Image folders must be prefixed with `linux-cloud-` for EVE-NG to pick them up under the template created in previous step, the text after the hyphen can be whatever you want
 {{< /admonition >}}
 
 ```
-mkdir /opt/unetlab/addons/qemu/linux-ubuntu-22.04.3
-mkdir /opt/unetlab/addons/qemu/linux-debian-12
+mkdir /opt/unetlab/addons/qemu/linux-cloud-ubuntu-22.04.3
+mkdir /opt/unetlab/addons/qemu/linux-cloud-debian-12
 ```
 
 ### Download Image(s)
@@ -35,7 +76,7 @@ We will download these to our EVE-NG server into the image folder created above
 **Ubuntu:**
 
 ```
-cd /opt/unetlab/addons/qemu/linux-ubuntu-22.04.3
+cd /opt/unetlab/addons/qemu/linux-cloud-ubuntu-22.04.3
 wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img \
     -O virtioa.qcow2
 ```
@@ -43,7 +84,7 @@ wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.i
 **Debian:**
 
 ```
-cd /opt/unetlab/addons/qemu/linux-debian-12
+cd /opt/unetlab/addons/qemu/linux-cloud-debian-12
 wget https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2 \
     -O virtioa.qcow2
 ```
@@ -135,8 +176,8 @@ Max brk space used 0
 After the `cdrom.iso` is created, we can copy it to the image location
 
 ```
-cp cdrom.iso /opt/unetlab/addons/qemu/linux-ubuntu-20.04.3
-cp cdrom.iso /opt/unetlab/addons/qemu/linux-debian12
+cp cdrom.iso /opt/unetlab/addons/qemu/linux-cloud-ubuntu-20.04.3
+cp cdrom.iso /opt/unetlab/addons/qemu/linux-cloud-debian12
 ```
 
 ### Fix Permissions
@@ -153,9 +194,7 @@ As with all EVE-NG images, we need to run `fixpermissions`
 Each node should be connected to the internet in some way before starting them, the easiest being through Cloud0. Without this, they take a long time to boot because Cloud-init is unable to complete
 {{< /admonition >}}
 
-Return to your EVE-NG Lab and launch a node, you will find these cloud images under `Linux`, then in the `Image` dropdown you can select the one you want.
-
-![Launch Node](images/launch-node.png)
+Return to your EVE-NG Lab and launch a node, you will find these cloud images under `Linux Cloud`, then in the `Image` dropdown you can select the one you want.
 
 Once that's added to the toplogy, you can start it. Wait for it to come to the login prompt.
 
