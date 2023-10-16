@@ -47,7 +47,9 @@ You will now have an Ubuntu LXC, but there are a few more modifications to do be
 1. Select your LXC from the navigation
 2. (Optional) Add additional network interfaces (eth1, eth2, etc.)
     * For additional interfaces, leave IPv4 and IPv6 set to Static, but do not enter an IP
-3. Under Options > Features, check Nesting
+3. Under Options > Features
+    1. Check Nesting
+    2. Check FUSE
 
 This will allow the the LXC to launch additional containers, this is necessary for EVE-NG to function. We will need to do an additional step on the CLI
 
