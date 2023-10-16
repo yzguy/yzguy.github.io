@@ -68,6 +68,8 @@ This will allow the the LXC to launch additional containers, this is necessary f
     * Sets the apparmor profile to unconfined (open)
     * Gives LXC all capabilities
 
+    [Reference](https://linuxcontainers.org/lxc/manpages/man5/lxc.container.conf.5.html)
+
 4. Save and quit
 
 ### Upgrade Ubuntu
@@ -95,6 +97,12 @@ Finally, we have all the bits in place to install EVE-NG. We will need to use th
     ```
 
 After installation completes, you will need to reboot. Once then system is booted again, you will be starting from the same point as if you started from the iSO or OVF.
+
+You will want to install the remaining dependencies
+
+```
+apt update && apt install eve-ng-dockers
+```
 
 ### Caveats
 
