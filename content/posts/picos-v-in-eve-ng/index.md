@@ -3,7 +3,7 @@ title = 'PicOS-V in EVE-NG'
 date = 2024-05-01T21:51:17-04:00
 +++
 
-PicaOS-V is the free virtual machine provided by [Pica8](https://www.pica8.com/) that allows you to experiment with their NOS.
+PicOS-V is the free virtual machine provided by [Pica8](https://www.pica8.com/) that allows you to experiment with their NOS.
 
 Having virtual images for various NOS is hugely beneficial for learning.  PicOS is the one I've recently stumbled upon.
 
