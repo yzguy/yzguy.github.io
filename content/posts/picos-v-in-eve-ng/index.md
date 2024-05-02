@@ -5,7 +5,7 @@ date = 2024-05-01T21:51:17-04:00
 
 PicaOS-V is the free virtual machine provided by [Pica8](https://www.pica8.com/) that allows you to experiment with their NOS.
 
-Having virtual images for various NOS is hugely beneficial for learning.  PicOS is the one I've recently stumbled upon recently.
+Having virtual images for various NOS is hugely beneficial for learning.  PicOS is the one I've recently stumbled upon.
 
 A GNS3 qcow2 image is provided as well as directions for loading it into GNS3. However nothing for EVE-NG is provided, but fortunately it's easy to create a custom template and get it loaded in.
 
