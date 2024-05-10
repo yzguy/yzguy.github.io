@@ -1,6 +1,6 @@
 +++
 title = 'EVE-NG in LXC on Proxmox' 
-date = 2024-05-10T20:14:00-04:00
+date = 2024-05-10T11:14:00-04:00
 +++
 
 EVE-NG has multiple deployment methods with mostly references to starting from an iSO or OVF. You can also start from a fresh Ubuntu 22.04 install, then run the installation script to install EVE-NG. You can see these instructions in the [Pro](https://www.eve-ng.net/index.php/documentation/professional-cookbook/) or [Community](https://www.eve-ng.net/index.php/documentation/community-cookbook/) Cookbook.
