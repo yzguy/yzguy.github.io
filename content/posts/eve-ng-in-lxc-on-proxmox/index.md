@@ -3,15 +3,15 @@ title = 'EVE-NG in LXC on Proxmox'
 date = 2023-10-15T20:16:00-04:00
 +++
 
-EVE-NG has multiple deployment methods with mostly references to starting from an iSO or OVF. You can also start from a fresh Ubuntu 20.04 install, then run the installation script to install EVE-NG. You can see these instructions in the [Pro](https://www.eve-ng.net/index.php/documentation/professional-cookbook/) or [Community](https://www.eve-ng.net/index.php/documentation/community-cookbook/) Cookbook.
+EVE-NG has multiple deployment methods with mostly references to starting from an iSO or OVF. You can also start from a fresh Ubuntu 22.04 install, then run the installation script to install EVE-NG. You can see these instructions in the [Pro](https://www.eve-ng.net/index.php/documentation/professional-cookbook/) or [Community](https://www.eve-ng.net/index.php/documentation/community-cookbook/) Cookbook.
 
 The ability to start from an Ubuntu install and then install EVE-NG on top means we can install it inside an LXC container! However, it's not as simple due to the fact a LXC container is NOT a virtual machine. We will need to tweak the configuration to allow nesting and to allow cgroups in the LXC container.
 
-Additionally, we will be deploying our EVE-NG installation on top of Proxmox VE 8.0 so that we can use the same system for other purposes if necessary. These instructions will work for both EVE-NG Pro and EVE-NG Community.
+Additionally, we will be deploying our EVE-NG installation on top of Proxmox VE 8.x so that we can use the same system for other purposes if necessary. These instructions will work for both EVE-NG Pro and EVE-NG Community.
 
 ## Prerequisites
 
-* Ubuntu 20.04 LXC Template
+* Ubuntu 22.04 LXC Template
 
 ### Create LXC Container
 
@@ -22,7 +22,7 @@ Additionally, we will be deploying our EVE-NG installation on top of Proxmox VE 
     3. Enter/Confirm password
     4. (Optional) Enter an SSH Public Key
 3. Template
-    1. Select `ubuntu-20.04-standard_20.04-1_amd64.tar.gz` template
+    1. Select `ubuntu-22.04-standard_22.04-1_amd64.tar.gz` template
 4. Disks
     1. Set desired disk size
 5. CPU
@@ -79,7 +79,7 @@ This will allow the the LXC to launch additional containers, this is necessary f
 1. Start your LXC
 2. From the console or SSH
     1. Run `apt-get update && apt-get upgrade -y`
-    2. Install `gnupg2` dependency
+    2. Install `gnupg2` dependency via `apt-get install gnupg2 -y`
 3. Reboot
 
 ### Install EVE-NG
@@ -89,13 +89,13 @@ Finally, we have all the bits in place to install EVE-NG. We will need to use th
 * EVE-NG Pro
 
     ```
-    wget -O - https://www.eve-ng.net/focal/install-eve-pro.sh | bash -i
+    wget -O - https://www.eve-ng.net/jammy/install-eve-pro.sh | bash -i
     ```
 
 * EVE-NG Community
 
     ```
-    wget -O - https://www.eve-ng.net/focal/install-eve.sh | bash -i
+    wget -O - https://www.eve-ng.net/jammy/install-eve.sh | bash -i
     ```
 
 After installation completes, you will need to reboot. Once then system is booted again, you will be starting from the same point as if you started from the iSO or OVF.
@@ -103,8 +103,45 @@ After installation completes, you will need to reboot. Once then system is boote
 You will want to install the remaining dependencies
 
 ```
-apt update && apt install eve-ng-dockers
+apt-get update && apt-get install eve-ng-dockers -y
 ```
+
+### Troubleshooting
+
+#### Consoles do not work
+
+`guacd` will listen on `::1`, but is expected to be listening on `127.0.0.1`, you can confirm this is happening by running below
+
+```
+root@eve:~# ss -lntp | grep guacd
+LISTEN 0      5                   [::1]:4822          [::]:*    users:(("guacd",pid=1196,fd=4))
+```
+
+To fix this follow the process below
+
+1. Create `/etc/guacamole/guacd.conf` with the following contents
+
+    ```
+    [server]
+    bind_host = 127.0.0.1
+    bind_port = 4822
+    ```
+
+2. Add the following properties to `/etc/guacamole/guacamole.properties`
+
+    ```
+    guacd-hostname: 127.0.0.1
+    guacd-port: 4822
+    ```
+
+3. Restart `guacd` via `systemctl restart guacd`
+
+4. Confirm it is now listening on `127.0.0.1`
+
+    ```
+    root@eve:/etc/guacamole# ss -lntp | grep guacd
+    LISTEN 0      5               127.0.0.1:4822       0.0.0.0:*    users:(("guacd",pid=29290,fd=4))
+    ```
 
 ### Caveats
 
