@@ -58,7 +58,7 @@ Image folders must be prefixed with `linux-cloud-` for EVE-NG to pick them up un
 {{< /admonition >}}
 
 ```
-mkdir /opt/unetlab/addons/qemu/linux-cloud-ubuntu-22.04.3
+mkdir /opt/unetlab/addons/qemu/linux-cloud-ubuntu-24.04
 mkdir /opt/unetlab/addons/qemu/linux-cloud-debian-12
 ```
 
@@ -67,7 +67,7 @@ mkdir /opt/unetlab/addons/qemu/linux-cloud-debian-12
 Both Ubuntu and Debian provide cloud images for download, the location for these can be found below
 
 * [Ubuntu Cloud Images](https://cloud-images.ubuntu.com/)
-    * eg. `jammy-server-cloudimg-amd64.img`
+    * eg. `noble-server-cloudimg-amd64.img`
 * [Debian Cloud Images](https://cloud.debian.org/images/cloud/)
     * eg. `debian-12-genericcloud-amd64.qcow2`
 
@@ -76,8 +76,8 @@ We will download these to our EVE-NG server into the image folder created above
 **Ubuntu:**
 
 ```
-cd /opt/unetlab/addons/qemu/linux-cloud-ubuntu-22.04.3
-wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img \
+cd /opt/unetlab/addons/qemu/linux-cloud-ubuntu-24.04
+wget https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img \
     -O virtioa.qcow2
 ```
 
@@ -131,6 +131,22 @@ Format specific information:
 ```
 
 This will not expand the partition or filesystem, it will just simply increase the size of the disk. Cloud-init will take care of expanding to take up the remaining free space when it boots
+
+#### Optional: Install Packages
+
+It's super helpful to have VMs start off with all the useful packages for labbing, eg `mtr`, `netcat-openbsd`, etc.
+
+With the help of `virt-customize` we can do this to our image so that any VM started from our image will already have these installed
+
+```
+-> virt-customize -a virtioa.qcow2 --install mtr,netcat-openbsd,inetutils-traceroute,iperf3,tcpdump,dnsutils,nmap,neovim,curl,wget
+[   0.0] Examining the guest ...
+[   4.6] Setting a random seed
+virt-customize: warning: random seed could not be set for this type of
+guest
+[   4.7] Installing packages: mtr netcat-openbsd inetutils-traceroute iperf3 tcpdump dnsutils nmap neovim curl wget
+[  11.6] Finishing off
+```
 
 ### Create Cloud-Init ISO
 
