@@ -148,6 +148,20 @@ guest
 [  11.6] Finishing off
 ```
 
+### Clear Machine-ID
+
+The VMs that will be started from the cloud image will all have the same machine-id, which will causes MAC addresses to be the same, etc.
+We need to clear this, so that it will be regenerated for every VM that's started from the image
+
+```
+-> virt-customize -a virtioa.qcow2 --truncate /etc/machine-id
+[   0.0] Examining the guest ...
+[   5.5] Setting a random seed
+[   5.6] Setting the machine ID in /etc/machine-id
+[   5.6] Truncating: /etc/machine-id
+[   5.6] Finishing off
+```
+
 ### Create Cloud-Init ISO
 
 Cloud-Init allows you to pass configuration to the operating system that will be executed on first boot.
