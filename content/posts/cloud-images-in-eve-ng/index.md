@@ -139,7 +139,7 @@ It's super helpful to have VMs start off with all the useful packages for labbin
 With the help of `virt-customize` we can do this to our image so that any VM started from our image will already have these installed
 
 ```
--> virt-customize -a virtioa.qcow2 --install mtr,netcat-openbsd,inetutils-traceroute,iperf3,tcpdump,dnsutils,nmap,neovim,curl,wget
+-> virt-customize -a virtioa.qcow2 --install mtr,netcat-openbsd,inetutils-traceroute,iperf3,tcpdump,dnsutils,nmap,neovim,curl,wget,lldpd,snmp
 [   0.0] Examining the guest ...
 [   4.6] Setting a random seed
 virt-customize: warning: random seed could not be set for this type of
@@ -206,7 +206,7 @@ Max brk space used 0
 After the `cdrom.iso` is created, we can copy it to the image location
 
 ```
-cp cdrom.iso /opt/unetlab/addons/qemu/linux-cloud-ubuntu-20.04.3
+cp cdrom.iso /opt/unetlab/addons/qemu/linux-cloud-ubuntu-24.04
 cp cdrom.iso /opt/unetlab/addons/qemu/linux-cloud-debian12
 ```
 
